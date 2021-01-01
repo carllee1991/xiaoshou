@@ -8,8 +8,8 @@ CREATE TABLE Accounts (
     AccountID varchar(20) NOT NULL,
     AccountEmail varchar(70) NOT NULL,
     AccountPassword varchar(40) NOT NULL,
-    AccountDisplayName nvarchar(40) NOT NULL,
-    AccountStatus ENUM('active', 'verified', 'vip', 'pending', 'delete', 'removed', 'inactive') NOT NULL DEFAULT 'active',
+    AccountDisplayName nvarchar(40) NOT NULL DEFAULT '小手用户',
+    AccountStatus ENUM('active', 'verified', 'vip', 'pending', 'delete', 'removed', 'inactive', 'update') NOT NULL DEFAULT 'update',
     AccountCreateDate TIMESTAMP NOT NULL,
     AccountModifyDate TIMESTAMP NOT NULL,
     AccountPhoto BLOB,
@@ -23,7 +23,7 @@ CREATE TABLE Accounts (
     PaymentBankCity nvarchar(20),
     PaymentBankDisctrict nvarchar(20),
     PaymentBankBranchName nvarchar(80),
-    StoresCount int NOT NULL
+    StoresCount int NOT NULL DEFAULT 0
 );
 
 INSERT INTO Accounts (
@@ -38,11 +38,17 @@ VALUES ('carllee1991', 'carl@email.com', '123', '烂漫小豆', 'vip',
     '北京', '北京', '东城区', '东直门支行东直门支行东直门支行东直门支行东直门支行',
     1);
 
+INSERT INTO Accounts (
+    AccountID, AccountEmail, AccountPassword,
+    AccountCreateDate, AccountModifyDate)
+VALUES ('carllee1992', 'carl2@email.com', '123',
+    now(), now());
+
 -- Stores
 CREATE TABLE Stores (
     StoreNo int AUTO_INCREMENT PRIMARY KEY,
     StoreDisplayName nvarchar(40) NOT NULL,
-    StoreStatus ENUM('active', 'verified', 'vip', 'pending', 'delete', 'removed', 'inactive') NOT NULL DEFAULT 'pending',
+    StoreStatus ENUM('active', 'verified', 'vip', 'pending', 'delete', 'removed', 'inactive', 'update') NOT NULL DEFAULT 'pending',
     StoreCreateDate TIMESTAMP NOT NULL,
     StoreModifyDate TIMESTAMP NOT NULL,
     StorePhoto BLOB,
@@ -65,7 +71,7 @@ CREATE TABLE Items (
     ItemNo int AUTO_INCREMENT PRIMARY KEY,
     ItemDisplayName nvarchar(40) NOT NULL,
     ItemInventory int NOT NULL DEFAULT 0,
-    ItemStatus ENUM('active', 'inactive', 'pending', 'delete', 'removed') NOT NULL DEFAULT 'pending',
+    ItemStatus ENUM('active', 'inactive', 'pending', 'delete', 'removed', 'update') NOT NULL DEFAULT 'pending',
     ItemType ENUM('customize', 'instock') NOT NULL,
     ItemReturnPolicy ENUM('nonreturnable', '7days', '14days', '30days', '60days', '90days') NOT NULL DEFAULT 'nonreturnable',
     ItemPhotos BLOB(20),
@@ -120,7 +126,7 @@ CREATE TABLE Customers (
 -- Orders
 CREATE TABLE Orders (
     OrderNo int AUTO_INCREMENT PRIMARY KEY,
-    OrderStatus ENUM('pending_ship', 'arriving', 'delivered', 'closed', 'cancelled') NOT NULL,
+    OrderStatus ENUM('pending_ship', 'arriving', 'delivered', 'closed', 'cancelled', 'update') NOT NULL,
     ShippingFee int NOT NULL DEFAULT 0,
     OrderCreateDate TIMESTAMP NOT NULL,
     OrderCloseDate TIMESTAMP,
@@ -144,7 +150,7 @@ CREATE TABLE Orders (
 -- OrderItems
 CREATE TABLE OrderItems (
     OrderItemNo int AUTO_INCREMENT PRIMARY KEY,
-    OrderStatus ENUM('pending_ship', 'arriving', 'delivered', 'closed', 'cancelled') NOT NULL,
+    OrderStatus ENUM('pending_ship', 'arriving', 'delivered', 'closed', 'cancelled', 'update') NOT NULL,
     ShippingFee int NOT NULL DEFAULT 0,
     CustomizeRequiredInfo nvarchar(1000) NOT NULL,
     CustomizeNotes nvarchar(1000),
