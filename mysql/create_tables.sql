@@ -1,3 +1,4 @@
+-- Create xiaoshou mysql
 CREATE DATABASE xiaoshou;
 USE xiaoshou;
 
